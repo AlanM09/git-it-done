@@ -1,3 +1,4 @@
+var limitWarningEl = document.querySelector("#limit-warning");
 var getRepoIssues = function (repo) {
     console.log(repo);
 
@@ -12,7 +13,7 @@ var getRepoIssues = function (repo) {
 
                 // check if api has paginated issues (30 or more)
                 if (response.headers.get("Link")) {
-                    console.log("repo has more than 30 issues");
+                    displayWarning(repo);
                 }
             });
         }
@@ -24,7 +25,7 @@ var getRepoIssues = function (repo) {
 
 };
 
-var limitWarningEl = document.querySelector("#limit-warning");
+
 var displayWarning = function (repo) {
     // add text to warning container
     limitWarningEl.textContent = "To see more than 30 issues, visit ";
