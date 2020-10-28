@@ -4,10 +4,21 @@ var getUserRepos = function (user) {
 
     //make a request to the URL
     fetch(apiUrl).then(function (response) {
-        response.json().then(function (data) {
-            displayRepos(data, user);
+
+        // Request was Successful
+        if (response.ok) {
+            response.json().then(function (data) {
+                displayRepos(data, user);
+            });
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    })
+        // Function to let us know that there is no internet
+        .catch(function (error) {
+            // Notice this '.catch()' getting chained onto the end of the '.then()'
+            alert("Unable to connect to Github");
         });
-    });
 };
 
 var userFormEl = document.querySelector("#user-form");
@@ -38,6 +49,12 @@ var displayRepos = function (repos, searchTerm) {
     repoContainerEl.textContent = "";
     repoSearchTerm.textContent = searchTerm;
 
+    // check if api returned any repos
+    if (repos.length === 0) {
+        repoContainerEl.textContent = "No repositories found.";
+        return;
+    }
+
     // loop over repos
     for (var i = 0; i < repos.length; i++) {
         // format repo name
@@ -60,8 +77,8 @@ var displayRepos = function (repos, searchTerm) {
 
         // check if current repo has issues or not
         if (repos[i].open_issues_count > 0) {
-            statusEl.innerHTML = 
-            "<i class+'fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
+            statusEl.innerHTML =
+                "<i class+'fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
         }
         else {
             statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
