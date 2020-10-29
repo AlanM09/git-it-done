@@ -25,6 +25,16 @@ var getRepoIssues = function (repo) {
 
 };
 
+// here we are puuling the repoName from index.html to sing-repo to show us what issue we are looking at
+var getRepoName = function() {
+var queryString = document.location.search;
+var repoName = queryString.split("=")[1];
+getRepoIssues(repoName);
+repoNameEl.textContent = repoName;
+}
+
+var repoNameEl = document.querySelector("#repo-name");
+
 
 var displayWarning = function (repo) {
     // add text to warning container
@@ -79,5 +89,4 @@ var displayIssues = function (issues) {
     }
 };
 
-
-getRepoIssues("facebook/react");
+getRepoName ();
