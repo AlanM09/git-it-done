@@ -18,7 +18,8 @@ var getRepoIssues = function (repo) {
             });
         }
         else {
-            alert: ("There was a problem with you request!");
+            // if not successful, redirect to homepage
+            document.location.replace("./index.html");
         }
     });
 
@@ -26,12 +27,19 @@ var getRepoIssues = function (repo) {
 };
 
 // here we are puuling the repoName from index.html to sing-repo to show us what issue we are looking at
-var getRepoName = function() {
-var queryString = document.location.search;
-var repoName = queryString.split("=")[1];
-getRepoIssues(repoName);
-repoNameEl.textContent = repoName;
-}
+var getRepoName = function () {
+    var queryString = document.location.search;
+    var repoName = queryString.split("=")[1];
+
+    if (repoName) {
+        repoNameEl.textContent = repoName;
+        getRepoIssues(repoName);
+    }
+    else {
+        // if no repo was given, redirect to the homepage
+        document.location.replace("./index.html");
+    }
+};
 
 var repoNameEl = document.querySelector("#repo-name");
 
@@ -89,4 +97,4 @@ var displayIssues = function (issues) {
     }
 };
 
-getRepoName ();
+getRepoName();
